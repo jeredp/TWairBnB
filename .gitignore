@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+.sass-cache/
+target/
+out/
+.gradle/
+*.iml
+web-app/css/
+.classpath
+.project
+atlassian-ide-plugin.xml
