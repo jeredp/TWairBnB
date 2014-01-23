@@ -31,6 +31,7 @@ class AddressControllerSpec extends Specification {
             def result = controller.search()
         then: "the user sees the one address"
             result.addresses.size() == 1
+            result.addresses.get(0).state == 'ME'
     }
 
     void "should search by area code"() {
@@ -48,6 +49,20 @@ class AddressControllerSpec extends Specification {
         result.addresses.size() == 2
     }
 
+    void "should search by state"() {
+        given: "there is 1 address with in IL"
+        def address = new Address(city: 'lewiston', state: 'ME', streetAddress: '8 Dill st', areaCode: '04240', user: aUser)
+        def address2 = new Address(city: 'chicago', state: 'IL', streetAddress: '201 Randolf', areaCode: '60614', user: aUser)
+        address.save(flush: true, failOnError: true)
+        address2.save(flush: true, failOnError: true)
+        when: "the user searches for addresses in state IL"
+        params.state = 'IL'
+        def result = controller.search()
+        then: "the user sees the IL address"
+        result.addresses.size() == 1
+        result.addresses.get(0).areaCode == "60614"
+    }
+
     //this test passes yet it is not true in real life : real life it will return all Addresses
     void "should not show results"() {
         given: "there are 3 addresses"
@@ -62,5 +77,6 @@ class AddressControllerSpec extends Specification {
         then: "the user sees the no addresses"
         result.addresses.size() == 0
     }
+
 
 }

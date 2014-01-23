@@ -17,18 +17,18 @@ class AddressController {
     @Secured(['ROLE_USER'])
     def search() {
         def results = []
-        if(params.city || params.state || params.state) {
+        if(params.city || params.state || params.areaCode) {
             def criteria = Address.createCriteria()
             results = criteria.list{
                 and {
                     if(params.city) {
                         ilike("city", params.city as String)
                     }
-                    if(params.areaCode) {
-                        eq("areaCode", params.areaCode as String)
-                    }
                     if(params.state) {
                         ilike("state", params.state as String)
+                    }
+                    if(params.areaCode) {
+                        eq("areaCode", params.areaCode as String)
                     }
                 }
             }
